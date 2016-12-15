@@ -13823,7 +13823,8 @@ zSkzMzMzMzMzM2sa35wyMzMzMzMzM7Om+R/EeJN+d/a0cwAAAABJRU5ErkJggg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer: </strong> For all learning curves above, the training and testing scores converge to asymptotes as training points are added. However, beyond about a hundred training points, very little is gained from additional training points. Furthermore, by increasing the depth (i.e., complexity) of the decision tree, the training and testing scores become unable to converge to the same asymptote; this occurs at least by 'max_depth = 6'.</p>
+<p><strong>Answer: </strong> Generally, for all learning curves above, the training and testing scores converge to asymptotes as training points are added. However, beyond about a hundred training points, very little is gained from additional training points. Furthermore, by increasing the depth (i.e., complexity) of the decision tree, the training and testing scores become unable to converge to the same asymptote; this occurs at least by 'max_depth = 6'.</p>
+<p>Specifically for the training score, as training points are added, the score decreases toward an asymptote, which indicates the true performance of the model. For the testing score, as training points are added, the score increases toward an asymptote. Generally, beyond a hundred training points, adding more training points isn't beneficial to the fit of the model. It doesn't hurt anything to have more data, it simply doesn't improve anything. The key idea here is that we use learning curves to discover what the ideal depth of a decision tree model would be. Later in the process we find this out quantitatively using the grid search technique.</p>
 
 </div>
 </div>
@@ -14633,7 +14634,7 @@ E/sfyg8sNeMFv9AAAAAASUVORK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer: </strong> K-fold cross-validation is a technique where we run an algorith K times, pulling one of K folds for testing and training on n minus K folds each time. The benefit of using this technique is that with it we can utilize the entire data set for both training and testing. Though slower in training time, once training is complete we have a more accurate model with equivalent performance efficiency to other less accurate methods. Thus, this is typically what we would want to do, unless training was unreasonably slow to hit some deadline.</p>
+<p><strong>Answer: </strong> K-fold cross-validation is a technique where we run an algorith K times, pulling one of K folds for testing and training on K - 1 folds each time. The benefit of using this technique is that with it we can utilize the entire data set for both training and testing. Though slower in training time, once training is complete we have a more accurate model with equivalent performance efficiency to other less accurate methods. Thus, this is typically what we would want to do, unless training was unreasonably slow to hit some deadline.</p>
 
 </div>
 </div>
