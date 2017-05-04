@@ -20,8 +20,7 @@ class LearningAgent(Agent):
         self.alpha = alpha       # Learning factor
 
         # Set any additional class parameters as needed
-        
-        
+        self.trial = 0
 
     def reset(self, destination=None, testing=False):
         """ The reset function is called at the beginning of each trial.
@@ -37,7 +36,9 @@ class LearningAgent(Agent):
         if testing:
             self.epsilon, self.alpha = 0,0
         else:
-            self.epsilon -= 0.05
+            #self.epsilon -= 0.05 initial try
+            self.trial += 1
+            self.epsilon = math.cos(2*math.pi + .01*self.trial)
 
         return None
 
@@ -113,7 +114,7 @@ class LearningAgent(Agent):
 
         # When learning, implement the value iteration update rule
         #   Use only the learning rate 'alpha' (do not use the discount factor 'gamma')
-        discount = 1 # has no effect on the value iteration
+        discount = .999 # considers long-term rewards strongly
         q_old = self.Q[state][action]
         q_future = self.Q[state][self.get_maxQ(state)]
         self.Q[state][action] = q_old + self.alpha*(reward + discount*q_future - q_old)
@@ -153,7 +154,7 @@ def run():
     #    * epsilon - continuous value for the exploration factor, default is 1
     #    * alpha   - continuous value for the learning rate, default is 0.5
     #agent = env.create_agent(LearningAgent) #DEFAULT
-    agent = env.create_agent(LearningAgent, learning=True)
+    agent = env.create_agent(LearningAgent, learning=True, alpha=.4)
     
     ##############
     # Follow the driving agent
@@ -171,7 +172,8 @@ def run():
     #   optimized    - set to True to change the default log file name
     #sim = Simulator(env) #DEFAULT
     sim = Simulator(env, update_delay = .01) # quick
-    #sim = Simulator(env, update_delay = .01, display = False, log_metrics = True)
+    #sim = Simulator(env, update_delay = .01, display=False, log_metrics=True)
+    #sim = Simulator(env, update_delay = .01, display=False, log_metrics=True, optimized=True)
     
     ##############
     # Run the simulator
