@@ -36,9 +36,9 @@ class LearningAgent(Agent):
         if testing:
             self.epsilon, self.alpha = 0,0
         else:
-            #self.epsilon -= 0.05 initial try
+            #self.epsilon -= 0.05 # initial try
             self.trial += 1
-            self.epsilon = math.cos(2*math.pi + .01*self.trial)
+            self.epsilon = math.cos(2*math.pi + .01*self.trial) # optimal
 
         return None
 
@@ -100,7 +100,7 @@ class LearningAgent(Agent):
         if not self.learning:
             action = random.choice(self.valid_actions)
         else:
-            if random.uniform(0.1, 1.0) < self.epsilon:
+            if random.uniform(0, 1.0) < self.epsilon:
                 action = random.choice(self.valid_actions)
             else:
                 action = self.get_maxQ(state)
@@ -114,7 +114,8 @@ class LearningAgent(Agent):
 
         # When learning, implement the value iteration update rule
         #   Use only the learning rate 'alpha' (do not use the discount factor 'gamma')
-        discount = .999 # considers long-term rewards strongly
+        #discount = .999 # considers long-term rewards strongly
+        discount = 0 # Myopic
         q_old = self.Q[state][action]
         q_future = self.Q[state][self.get_maxQ(state)]
         self.Q[state][action] = q_old + self.alpha*(reward + discount*q_future - q_old)
@@ -154,7 +155,8 @@ def run():
     #    * epsilon - continuous value for the exploration factor, default is 1
     #    * alpha   - continuous value for the learning rate, default is 0.5
     #agent = env.create_agent(LearningAgent) #DEFAULT
-    agent = env.create_agent(LearningAgent, learning=True, alpha=.4)
+    #agent = env.create_agent(LearningAgent, learning=True) # learning
+    agent = env.create_agent(LearningAgent, learning=True, alpha=.4) # improved
     
     ##############
     # Follow the driving agent
@@ -181,7 +183,7 @@ def run():
     #   tolerance  - epsilon tolerance before beginning testing, default is 0.05 
     #   n_test     - discrete number of testing trials to perform, default is 0
     #sim.run() #DEFAULT
-    sim.run(n_test = 10)
+    sim.run(n_test = 20)
 
 
 if __name__ == '__main__':
