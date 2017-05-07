@@ -21,6 +21,7 @@ class LearningAgent(Agent):
 
         # Set any additional class parameters as needed
         self.trial = 0
+        self.future_state = None # Not used in this project
 
     def reset(self, destination=None, testing=False):
         """ The reset function is called at the beginning of each trial.
@@ -69,8 +70,10 @@ class LearningAgent(Agent):
         # Calculate the maximum Q-value of all actions for a given state
         keys=list(self.Q[state].keys())
         values=list(self.Q[state].values())
-        maxQ_action = keys[values.index(max(values))]
-        return maxQ_action 
+        max_val = max(values)
+        max_indices = [i for i,j in enumerate(values) if j == max_val]
+        maxQ_action = keys[random.choice(max_indices)] # picks a random choice from all maximal choices
+        return maxQ_action
 
 
     def createQ(self, state):
@@ -114,11 +117,16 @@ class LearningAgent(Agent):
 
         # When learning, implement the value iteration update rule
         #   Use only the learning rate 'alpha' (do not use the discount factor 'gamma')
-        #discount = .999 # considers long-term rewards strongly
-        discount = 0 # Myopic
-        q_old = self.Q[state][action]
-        q_future = self.Q[state][self.get_maxQ(state)]
-        self.Q[state][action] = q_old + self.alpha*(reward + discount*q_future - q_old)
+        if learning:
+            #discount = .999 # considers long-term rewards strongly
+            discount = 0 # Myopic
+            q_old = self.Q[state][action]
+            
+            # If we were using this, we could try to predict where we would be next here
+            self.future_state = state # Not used, setting to current state
+            q_future = self.Q[self.future_state][self.get_maxQ(self.future_state)]
+            
+            self.Q[state][action] = q_old + self.alpha*(reward + discount*q_future - q_old)
         return
 
 
